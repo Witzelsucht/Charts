@@ -45,12 +45,27 @@ namespace Charts
             set { Set(ref _errorMessage, value); }
         }
 
-        public List<string> Labels { get; set; } = new List<string>() { "Voltage", "Current", "Temperature" };
+        public List<SeriesViewModel> Legend { get; set; } = new List<SeriesViewModel>();
 
         public MainWindowViewModel()
         {
             Measurements = new List<Measurement>();
             Load = new RelayCommand(_Load);
+            Legend = new List<SeriesViewModel>()
+            {
+                new SeriesViewModel() {
+                    Title = "Voltage",
+                    Stroke = new SolidColorBrush(Color.FromRgb(0,0,255))
+                },
+                new SeriesViewModel() {
+                    Title = "Current",
+                    Stroke = new SolidColorBrush(Color.FromRgb(0,255,0))
+                },
+                new SeriesViewModel() {
+                    Title = "Temperature",
+                    Stroke = new SolidColorBrush(Color.FromRgb(255,0,0))
+                }
+            };
         }
 
         private void _Load()
@@ -66,11 +81,11 @@ namespace Charts
                 var line = "";
                 using (StreamReader sr = new StreamReader(path))
                 {
-                    while ((line = sr.ReadLine()) != null )
+                    while ((line = sr.ReadLine()) != null)
                     {
                         try
                         {
-                            var arr = line.Replace(" ", string.Empty).Replace(".",",").Split(';');
+                            var arr = line.Replace(" ", string.Empty).Replace(".", ",").Split(';');
                             var measurement = new Measurement()
                             {
                                 Voltage = float.Parse(arr[0]),
@@ -80,7 +95,7 @@ namespace Charts
                             };
                             Measurements.Add(measurement);
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
                             IsError = true;
                             ErrorMessage = e.Message;
@@ -91,25 +106,25 @@ namespace Charts
                        new LineSeries
                        {
                            Title = "Voltage",
-                           Values = new ChartValues<float>(Measurements.Select(m => m.Voltage).ToArray()),
                            Stroke = new SolidColorBrush(Color.FromRgb(0,0,255)),
-                           Fill = new SolidColorBrush(Color.FromArgb(0,0,0,0))
+                           Fill = new SolidColorBrush(Color.FromArgb(0,0,0,0)),
+                           Values = new ChartValues<float>(Measurements.Select(m => m.Voltage).ToArray()),
+
 
                        },
                        new LineSeries
                        {
                            Title = "Current",
-                           Values = new ChartValues<float>(Measurements.Select(m => m.Current).ToArray()),
                            Stroke = new SolidColorBrush(Color.FromRgb(0,255,0)),
-                           Fill = new SolidColorBrush(Color.FromArgb(0,0,0,0))
-
+                           Fill = new SolidColorBrush(Color.FromArgb(0,0,0,0)),
+                           Values = new ChartValues<float>(Measurements.Select(m => m.Current).ToArray())
                        },
                        new LineSeries
                        {
                            Title = "Temperature",
-                           Values = new ChartValues<float>(Measurements.Select(m => m.Temperature).ToArray()),
                            Stroke = new SolidColorBrush(Color.FromRgb(255,0,0)),
-                           Fill = new SolidColorBrush(Color.FromArgb(0,0,0,0))
+                           Fill = new SolidColorBrush(Color.FromArgb(0,0,0,0)),
+                           Values = new ChartValues<float>(Measurements.Select(m => m.Temperature).ToArray()),
                        }
                     };
                     IsLoaded = true;

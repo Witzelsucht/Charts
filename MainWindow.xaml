@@ -11,41 +11,41 @@
         <local:MainWindowViewModel/>
     </Window.DataContext>
     <Grid>
-    <Grid>
-        <Grid.Style>
-            <Style TargetType="{x:Type Grid}">
-                <Setter Property="Visibility" Value="Visible"/>
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsError}" Value="True">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Grid.Style>
-        <Button Width="100" Height="50" FontSize="20" Command="{Binding Load}" Content="Load">
-            <Button.Style>
-                <Style TargetType="{x:Type Button}">
+        <Grid>
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
                     <Setter Property="Visibility" Value="Visible"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsLoaded}" Value="True">
+                        <DataTrigger Binding="{Binding IsError}" Value="True">
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Button.Style>
-        </Button>
-        <lvc:CartesianChart Series="{Binding SeriesViews}" >
-            <lvc:CartesianChart.Style>
-                <Style TargetType="{x:Type lvc:CartesianChart}">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsLoaded}" Value="True">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </lvc:CartesianChart.Style>
-            <lvc:CartesianChart.AxisX>
+            </Grid.Style>
+            <Button Width="100" Height="50" FontSize="20" Command="{Binding Load}" Content="Load">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLoaded}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <lvc:CartesianChart Series="{Binding SeriesViews}" LegendLocation="Right">
+                <lvc:CartesianChart.Style>
+                    <Style TargetType="{x:Type lvc:CartesianChart}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLoaded}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </lvc:CartesianChart.Style>
+                <lvc:CartesianChart.AxisX>
                     <lvc:Axis Title="Time"/>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
@@ -56,8 +56,8 @@
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisY>
             </lvc:CartesianChart>
-    </Grid>
-    <Grid>
+        </Grid>
+        <Grid>
             <Grid.Style>
                 <Style TargetType="{x:Type Grid}">
                     <Setter Property="Visibility" Value="Collapsed"/>

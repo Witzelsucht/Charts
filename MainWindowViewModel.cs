@@ -45,31 +45,15 @@ namespace Charts
             set { Set(ref _errorMessage, value); }
         }
 
-        public List<SeriesViewModel> Legend { get; set; } = new List<SeriesViewModel>();
-
         public MainWindowViewModel()
         {
             Measurements = new List<Measurement>();
             Load = new RelayCommand(_Load);
-            Legend = new List<SeriesViewModel>()
-            {
-                new SeriesViewModel() {
-                    Title = "Voltage",
-                    Stroke = new SolidColorBrush(Color.FromRgb(0,0,255))
-                },
-                new SeriesViewModel() {
-                    Title = "Current",
-                    Stroke = new SolidColorBrush(Color.FromRgb(0,255,0))
-                },
-                new SeriesViewModel() {
-                    Title = "Temperature",
-                    Stroke = new SolidColorBrush(Color.FromRgb(255,0,0))
-                }
-            };
         }
 
         private void _Load()
         {
+            Measurements = new List<Measurement>();
             var dialog = new OpenFileDialog()
             {
                 Title = "Select a file",
@@ -79,29 +63,28 @@ namespace Charts
             {
                 var path = dialog.FileName;
                 var line = "";
-                using (StreamReader sr = new StreamReader(path))
+                using StreamReader sr = new StreamReader(path);
+                while ((line = sr.ReadLine()) != null)
                 {
-                    while ((line = sr.ReadLine()) != null)
+                    try
                     {
-                        try
+                        var arr = line.Replace(" ", string.Empty).Replace(".", ",").Split(';');
+                        var measurement = new Measurement()
                         {
-                            var arr = line.Replace(" ", string.Empty).Replace(".", ",").Split(';');
-                            var measurement = new Measurement()
-                            {
-                                Voltage = float.Parse(arr[0]),
-                                Current = float.Parse(arr[1]),
-                                Temperature = float.Parse(arr[2]),
-                                Time = int.Parse(arr[3])
-                            };
-                            Measurements.Add(measurement);
-                        }
-                        catch (Exception e)
-                        {
-                            IsError = true;
-                            ErrorMessage = e.Message;
-                        }
+                            Voltage = float.Parse(arr[0]),
+                            Current = float.Parse(arr[1]),
+                            Temperature = float.Parse(arr[2]),
+                            Time = int.Parse(arr[3])
+                        };
+                        Measurements.Add(measurement);
                     }
-                    SeriesViews = new SeriesCollection
+                    catch (Exception e)
+                    {
+                        IsError = true;
+                        ErrorMessage = e.Message;
+                    }
+                }
+                SeriesViews = new SeriesCollection
                     {
                        new LineSeries
                        {
@@ -127,8 +110,7 @@ namespace Charts
                            Values = new ChartValues<float>(Measurements.Select(m => m.Temperature).ToArray()),
                        }
                     };
-                    IsLoaded = true;
-                }
+                IsLoaded = true;
             }
         }
     }

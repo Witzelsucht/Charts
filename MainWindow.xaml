@@ -12,9 +12,14 @@
     </Window.DataContext>
     <Grid>
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             <Grid.Style>
                 <Style TargetType="{x:Type Grid}">
                     <Setter Property="Visibility" Value="Visible"/>
+                    <Setter Property="Background" Value="Beige"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsError}" Value="True">
                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -22,7 +27,7 @@
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
-            <Button Width="100" Height="50" FontSize="20" Command="{Binding Load}" Content="Load">
+            <Button Width="100" Height="50" FontSize="20" Command="{Binding Load}" Grid.RowSpan="2" Content="Load">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Visibility" Value="Visible"/>
@@ -34,7 +39,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <lvc:CartesianChart Series="{Binding SeriesViews}" LegendLocation="Right">
+            <lvc:CartesianChart Series="{Binding SeriesViews}" Grid.Row="0" LegendLocation="Right">
                 <lvc:CartesianChart.Style>
                     <Style TargetType="{x:Type lvc:CartesianChart}">
                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -56,6 +61,18 @@
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisY>
             </lvc:CartesianChart>
+            <Button Width="100" Height="50" FontSize="20" Command="{Binding Load}" Content="Load" HorizontalAlignment="Left" Grid.Row="1" Margin="20 0 0 0">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLoaded}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
         </Grid>
         <Grid>
             <Grid.Style>
